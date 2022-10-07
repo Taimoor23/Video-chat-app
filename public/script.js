@@ -17,13 +17,13 @@ navigator.mediaDevices
 }).then((stream)=>{
     my_stream=stream
 })
-(function addVideoStream(video,stream){
+function addVideoStream(video,stream){
 video.srcObject=stream
 video.addEventListener('loadedmetadata',()=>{
     video.play()
     $('#video_grid').append(video)
 })
-})
+}
 
 $(function () {
     $("#show_chat").click(function () {

@@ -7,24 +7,46 @@ var peer = new Peer(undefined, {
 });
 
 const user = prompt("Enter your name");
-const my_video=document.createElement('video');
-my_video.muted=true;
-let my_stream;
+
+const myVideo = document.createElement("video");
+myVideo.muted = true;
+
+let myStream;
+
 navigator.mediaDevices
-.getUserMedia({
-    audio:true,
-    video:true
-}).then((stream)=>{
-    my_stream=stream
-    addVideoStream(my_video,stream)
-})
-function addVideoStream(video,stream){
-video.srcObject=stream
-video.addEventListener('loadedmetadata',()=>{
-    video.play()
-    $('#video_grid').append(video)
-})
+    .getUserMedia({
+        audio: true,
+        video: true,
+    })
+    .then((stream) => {
+        myStream = stream;
+        addVideoStream(myVideo, stream);
+        socket.on('user-connected',(userId)=>{
+            connectedToNewUser(userId,stream)
+        })
+        peer.on('call',(call)=>{
+            call.answer(stream)
+            const video=document.createElement(video)
+            call.on('stream',(userVideoStream)=>{
+                addVideoStream(video,userVideoStream)
+            })
+        })
+    })
+function connectedToNewUser(userId,stream){
+    const call=peer.call(userId,stream)
+    const video=document.createElement('video')
+    call.on('stream',(userVideoStream)=>{
+        addVideoStream(video,userVideoStream)
+    })
 }
+
+function addVideoStream(video, stream) {
+    video.srcObject = stream;
+    video.addEventListener("loadedmetadata", () => {
+        video.play();
+        $("#video_grid").append(video)
+    });
+};
 
 $(function () {
     $("#show_chat").click(function () {

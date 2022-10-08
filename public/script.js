@@ -66,7 +66,7 @@ $(function () {
             $("#chat_message").val("");
         }
     })
-    $('mute_button').click(function(){
+    $('#mute_button').click(function(){
         const enabled=myStream.getAudioTracks()[0].enabled
         if(enabled){
             myStream.getAudioTracks()[0].enabled=false
@@ -81,7 +81,7 @@ $(function () {
             $('#mute_button').html(html)
         }
         })
-    $('stop_video').click(function(){
+    $('#stop_video').click(function(){
         const enabled=myStream.getVideoTracks()[0].enabled
         if(enabled){
             myStream.getVideoTracks()[0].enabled=false
